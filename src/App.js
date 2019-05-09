@@ -2,17 +2,16 @@ import React from 'react';
 import './App.css';
 import Person from './Person/Person'
 
-const App = (props) => {
+class App  extends React.Component{
  
-  const [ personState, setPersonsState ] = React.useState(
-  {persons : [
+  state = {persons : [
     {name: 'Harald', age: 45},
     {name: 'Sony', age: 35 },
     {name: 'Sven', age: 44}
-  ]})
+  ]};
 
-  const switchEventHandler = () =>{
-    setPersonsState({ 
+  switchEventHandler = () =>{
+    this.setState({ 
       persons : [
         {name: 'Gustav', age: 12},
         {name: 'Lenny', age: 35 },
@@ -21,15 +20,16 @@ const App = (props) => {
       })
   }
 
+  render(){
     return (
     <div className="App">
-    <button onClick={switchEventHandler}>Switch name</button>
-    <Person name={personState.persons[0].name} age={personState.persons[0].age} />
-    <Person name= {personState.persons[1].name} age={personState.persons[1].age}>He loves to sing</Person>
-    <Person name={personState.persons[2].name} age={personState.persons[2].age}/>
-
+    <button onClick={this.switchEventHandler}>Switch name</button>
+    <Person name={this.state.persons[0].name} age={this.state.persons[0].age} />
+    <Person name= {this.state.persons[1].name} age={this.state.persons[1].age}>He loves to sing</Person>
+    <Person name={this.state.persons[2].name} age={this.state.persons[2].age}/>
     </div>
   )}
+  }
 
 
 export default App;
