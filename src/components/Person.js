@@ -1,10 +1,12 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import './Person.css'
+import React from 'react';
+import PropTypes from 'prop-types';
+import classes from './Person.module.css';
 
 function Person({name, age, children, click, changed}) {
+ 
+
   return (
-    <div className='Person'>
+    <div className={classes.Person}>
       <h1 onClick={click}>Here comes {name} who is {age} years old</h1>
       <div>{children}</div>
       <input type='text' onChange={changed} value={name} />
@@ -17,5 +19,5 @@ Person.propTypes = {
 
 }
 
-export default Person
+export default Person;
 

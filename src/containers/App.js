@@ -1,8 +1,7 @@
 import React from 'react';
-import './App.css';
-import Person from './Person/Person'
-import uuid from 'uuid/v1';
-
+import classes from  './App.module.css';
+import Persons from '../components/Persons';
+import Cockpit from '../components/Cockpit'
 
 class App  extends React.Component{
  
@@ -12,6 +11,11 @@ class App  extends React.Component{
     {id: 3, name: 'Sven', age: 44}
   ]
 };
+
+static getDerivedStateFromProps(props, state){
+  console.log('[App.js]getDerivedStateFromProps', props);
+  return state;
+}
 
   switchEventHandler = (myName) =>{
     this.setState({ 
@@ -60,49 +64,21 @@ class App  extends React.Component{
   }
 
   render(){
-
-    const style = {
-      background: 'green',
-      color: 'white',
-      border: '1px solid blue',
-      font: 'inherit',
-      padding: '8px',
-      cursor: 'pointer',
-      boxShadow: '0 2px 3px #ccc'
-    }
-
+    console.log('[App.js]render')
     let persons = null;
 
     if(this.state.showPersons === true){
-      persons = 
+      persons = (
       <div>
-        {this.state.persons.map((person, index) =>
-          <Person
-            key={person.id}
-            click={() => this.detelePersonHandler(index)}
-            name={person.name}
-            age={person.age}
-            changed={(event) => this.nameChangedHandler(event, person.id)}
-            />)}
-     </div> 
-      style.background = 'red';
+        <Persons persons={this.state.persons} clicked={this.detelePersonHandler} changed={this.nameChangedHandler} />
+      </div> );
     }
 
-    let classes = [];
-
-    if(this.state.persons.length <= 2){
-      classes.push('red');
-    }
-
-    if(this.state.persons.length <= 1){
-      classes.push('bold');
-    }
+   
 
     return (
-    <div className="App">
-      <p className={classes.join(' ')}>This is really working!</p>
-    <button style={style}
-     onClick={this.togglePersonsHandler}>Toggle persons</button>
+    <div className={classes.App}>
+      <Cockpit title={this.props.title} persons={this.state.persons} showPersons={this.state.showPersons} togglePersons={this.togglePersonsHandler} />
      {persons}
     </div>
   )}
