@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { useEffect, memo } from 'react';
 import classes from './Cockpit.module.css';
 
-const Cockpit = ({persons, showPersons, togglePersons, title}) => {
+const Cockpit = ({length, showPersons, togglePersons, title}) => {
+    useEffect(() =>{
+      console.log('[Cockpit.js]useEffect');
+      let timer = setTimeout(() => {
+        alert('Data has been saved');
+      }, 1000);
+      return () => { 
+        console.log('[Cockpit.js] clean up work in Cockpit.js');
+        clearTimeout(timer);
+       };
+    }, []); //In the array dependencies are passed
     let assignedClasses = [];
     let btnClass = '';
 
@@ -10,11 +20,11 @@ const Cockpit = ({persons, showPersons, togglePersons, title}) => {
     }
 
 
-    if(persons.length <= 2){
+    if(length <= 2){
       assignedClasses.push(classes.red);
     }
 
-    if(persons.length <= 1){
+    if(length <= 1){
       assignedClasses.push(classes.bold);
     }
     return (
@@ -27,4 +37,4 @@ const Cockpit = ({persons, showPersons, togglePersons, title}) => {
     );
 }
 
-export default Cockpit;
+export default memo(Cockpit);

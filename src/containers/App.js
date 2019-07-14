@@ -9,12 +9,27 @@ class App  extends React.Component{
     {id: 1, name: 'Harald', age: 45},
     {id: 2, name: 'Sony', age: 35 },
     {id: 3, name: 'Sven', age: 44}
-  ]
+  ],
+  showCockpit : true,
+  authenticated: false
 };
 
 static getDerivedStateFromProps(props, state){
   console.log('[App.js]getDerivedStateFromProps', props);
   return state;
+}
+
+componentDidMount(){
+  console.log('[App.js]componentDidMount');
+}
+
+shouldComponentUpdate(nextProps, nextState){
+  console.log('[App.js]shouldComponentUpdate');
+  return true;
+}
+
+componentDidUpdate(){
+  console.log('[App.js]componentDidUpdate');
 }
 
   switchEventHandler = (myName) =>{
@@ -27,6 +42,10 @@ static getDerivedStateFromProps(props, state){
       otherState: 'some other value', 
       showPersons: false
       })
+  }
+
+  loginHandler = () => {
+    this.setState({authenticated: true});
   }
 
   detelePersonHandler = (personIndex) => {
@@ -78,7 +97,15 @@ static getDerivedStateFromProps(props, state){
 
     return (
     <div className={classes.App}>
-      <Cockpit title={this.props.title} persons={this.state.persons} showPersons={this.state.showPersons} togglePersons={this.togglePersonsHandler} />
+      {this.state.showCockpit === true ? 
+      <button onClick={()=>this.setState({showCockpit: false})}>Remove cockpit</button> :
+      <button onClick={()=>this.setState({showCockpit: true})}>Show cockpit</button>
+      }
+     {this.state.showCockpit === true ? <Cockpit 
+      title={this.props.title}
+       length={this.state.persons.length}
+        showPersons={this.state.showPersons}
+         togglePersons={this.togglePersonsHandler} /> : null}
      {persons}
     </div>
   )}
