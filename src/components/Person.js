@@ -1,9 +1,10 @@
-import React, {Component, Fragment} from 'react';
+import React, {PureComponent, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import classes from './Person.module.css';
 import withClass from '../hoc/withClass';
+import AuthContext from '../context/context-auth';
 
-class Person extends Component {
+class Person extends PureComponent {
   constructor(props){
     super(props)
     this.inputElementRef = React.createRef();
@@ -12,6 +13,8 @@ class Person extends Component {
   componentWillUnmount(){
     console.log('[Person.js] componentWillUnmount');
 }
+
+  static contextType = AuthContext;
 
   componentDidMount(){
       // this.inputElement.focus();
@@ -22,6 +25,7 @@ class Person extends Component {
     console.log('[Person.js] is rendering...');
   return (
     <Fragment>
+      {this.context.authenticated === true ? <p>Is authenticated!</p> : <p>Please login!</p>}
       <h1 onClick={this.props.click}>Here comes {this.props.name} who is {this.props.age} years old</h1>
       <div>{this.props.children}</div>
       <input

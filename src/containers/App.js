@@ -1,7 +1,8 @@
 import React from 'react';
 import classes from  './App.module.css';
 import Persons from '../components/Persons';
-import Cockpit from '../components/Cockpit'
+import Cockpit from '../components/Cockpit';
+import AuthContext from '../context/context-auth';
 
 class App  extends React.Component{
  
@@ -45,7 +46,10 @@ componentDidUpdate(){
   }
 
   loginHandler = () => {
-    this.setState({authenticated: true});
+  
+    this.setState({
+      authenticated: this.authenticated = !this.authenticated
+   });
   }
 
   detelePersonHandler = (personIndex) => {
@@ -72,6 +76,13 @@ componentDidUpdate(){
 
   }
 
+  loginHandler = () => {
+    this.setState({authenticated: true});
+  }
+
+  logoutHandler = () =>{
+    this.setState({authenticated: false});
+  }
 
   togglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
@@ -89,7 +100,11 @@ componentDidUpdate(){
     if(this.state.showPersons === true){
       persons = (
       <div>
-        <Persons persons={this.state.persons} clicked={this.detelePersonHandler} changed={this.nameChangedHandler} />
+        <Persons 
+        persons={this.state.persons} 
+        clicked={this.detelePersonHandler} 
+        changed={this.nameChangedHandler}
+        isAuthenticated={this.state.authenticated} />
       </div> );
     }
 
@@ -101,12 +116,18 @@ componentDidUpdate(){
       <button onClick={()=>this.setState({showCockpit: false})}>Remove cockpit</button> :
       <button onClick={()=>this.setState({showCockpit: true})}>Show cockpit</button>
       }
+    <AuthContext.Provider
+     value={{ authenticated : this.state.authenticated, 
+    login: this.loginHandler, logout: this.logoutHandler}}
+    >
      {this.state.showCockpit === true ? <Cockpit 
       title={this.props.title}
        length={this.state.persons.length}
         showPersons={this.state.showPersons}
-         togglePersons={this.togglePersonsHandler} /> : null}
+         togglePersons={this.togglePersonsHandler}
+         /> : null}
      {persons}
+     </AuthContext.Provider>
     </div>
   )}
   }
